@@ -116,42 +116,46 @@ prove(L => R):-
  * Both of these must be proved in order to prove the original theorem.
  */
 % A v B on the left
+
+% we must prove both branches, one where A is true and one where B is true
 prove(L => R) :-
-    member(A v B, L),
-    del(A v B, L, NewL),
+    member(A v B, L),               % check if disjunction exists on left side
+    del(A v B, L, NewL),           
     nl,
     write('\tFirst branch: '),
     nl,
     write('=\t'),
-    write([A | NewL] => R),
+    write([A | NewL] => R),       
     write('\t (by or/left)'),
-    prove([A | NewL] => R),
+    prove([A | NewL] => R),        % prove first branch
     nl,
     write('\tSecond branch: '),
     nl,
     write('=\t'),
-    write([B | NewL] => R),
+    write([B | NewL] => R),        \
     write('\t (by or/left)'),
-    prove([B | NewL] => R).
+    prove([B | NewL] => R).        % prove second branch (both must succeed)
 
 % A ^ B on the right
+
+% we must prove both branches, one where A is on the right and one where B is on the right
 prove(L => R) :-
-    member(A ^ B, R),
-    del(A ^ B, R, NewR),
+    member(A ^ B, R),              % check if conjunction exists on right side
+    del(A ^ B, R, NewR),          
     nl,
     write('\tFirst branch: '),
     nl,
     write('=\t'),
-    write(L => [A | NewR]),
+    write(L => [A | NewR]),       
     write('\t (by and/right)'),
-    prove(L => [A | NewR]),
+    prove(L => [A | NewR]),        % prove first branch
     nl,
     write('\tSecond branch: '),
     nl,
     write('=\t'),
-    write(L => [B | NewR]),
+    write(L => [B | NewR]),       
     write('\t (by and/right)'),
-    prove(L => [B | NewR]).
+    prove(L => [B | NewR]).        % prove second branch (both must succeed)
 
 
 /*
@@ -234,4 +238,5 @@ reduce(L => R):-
     rmvDup(R, NewR),
     write('\nSetting '),write(NewL),
     write(' as True, and '),write(NewR),write(' as False.').
+
 
